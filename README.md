@@ -14,49 +14,51 @@ A Model Context Protocol (MCP) server that provides both HTTP and Stdio transpor
 ## Project Structure
 
 ```
-mcp-server/
-├── docker/
-│   ├── http/
-│   │   └── Dockerfile
-│   └── stdio/
-│       └── Dockerfile
-├── src/
-│   ├── config/
-│   │   ├── env.ts              # Environment configuration
-│   │   └── database.ts         # Database connection setup
-│   ├── resources/
-│   │   ├── helloWorld.ts       # Simple greeting resource
-│   │   ├── databaseTables.ts   # Database tables listing
-│   │   └── databaseSchema.ts   # Table schema information
-│   ├── tools/
-│   │   └── queryTool.ts        # SQL query execution tool
-│   ├── server/
-│   │   └── server.ts           # Shared MCP server setup
-│   ├── http/
-│   │   ├── app.ts              # Express app configuration
-│   │   └── httpHandler.ts      # HTTP request handlers
-│   ├── stdio/
-│   │   └── stdioServer.ts      # Stdio server implementation
-│   ├── index.ts                # HTTP server entry point
-│   └── stdioIndex.ts           # Stdio server entry point
-├── .env.example
-├── .dockerignore
-├── docker-compose.yml
-├── docker-compose.dev.yml
-├── package.json
-├── tsconfig.json
-└── README.md
+postgres-mcp-server
+├── Dockerfile                    # Main Docker container configuration for the MCP server
+├── Makefile                      # Build automation and common development tasks
+├── README.md                     # Project documentation and setup instructions
+├── docker-compose.dev.yml        # Development environment Docker Compose configuration
+├── docker-compose.yml            # Production Docker Compose configuration
+├── package-lock.json             # Exact dependency versions for Node.js packages
+├── package.json                  # Node.js project configuration and dependencies
+├── pyproject.toml               # Python project configuration (likely for tooling/scripts)
+├── tsconfig.json                # TypeScript compiler configuration
+└── src/
+    ├── config/
+    │   ├── database.ts          # Database connection configuration and setup
+    │   └── env.ts               # Environment variable handling and validation
+    ├── http/
+    │   ├── Dockerfile           # Docker configuration specific to HTTP server mode
+    │   ├── app.ts               # HTTP application setup and Express.js configuration
+    │   └── httpHandler.ts       # HTTP request handlers for MCP protocol over HTTP
+    ├── index.ts                 # Main entry point for the MCP server
+    ├── resources/
+    │   ├── databaseSchema.ts    # MCP resource for exposing database schema information
+    │   ├── databaseTables.ts    # MCP resource for listing and describing database tables
+    │   └── helloWorld.ts        # Example/test resource implementation
+    ├── server/
+    │   └── server.ts            # Core MCP server implementation and protocol handling
+    ├── stdio/
+    │   ├── Dockerfile           # Docker configuration for stdio communication mode
+    │   └── stdioServer.ts       # MCP server configured for stdio communication
+    ├── stdioIndex.ts            # Entry point for stdio-based MCP server
+    └── tools/
+        └── queryTool.ts         # MCP tool for executing PostgreSQL queries
+
 ```
 
 ## Quick Start
 
 ### 1. Environment Setup
 
+Copy environment template
 ```bash
-# Copy environment template
 cp .env.example .env
+```
 
-# Edit your database credentials
+Edit your database credentials
+```bash
 nano .env
 ```
 
@@ -68,22 +70,28 @@ npm install
 
 # Build the project
 npm run build
-
-# Run HTTP server in development
+```
+Run HTTP server in development
+```bash
 npm run dev:http
+```
 
-# Run Stdio server in development
+Run Stdio server in development
+```bash
 npm run dev:stdio
 ```
 
 ### 3. Production
 
+Build and start HTTP server
 ```bash
-# Build and start HTTP server
 npm run build
 npm run start:http
+```
 
-# Or start Stdio server
+Or start Stdio server
+```bash
+npm run build
 npm run start:stdio
 ```
 
@@ -141,20 +149,19 @@ make podman-up
 ```
 
 
-### Testing
-- `npm run test:http` - Test HTTP server endpoint
-#### MCP Inspector
+### Test using MCP Inspector
 
 Install MCP Inspector: instructions: [here](https://modelcontextprotocol.io/docs/tools/inspector)
 
-##### Check Stdio MCP Server
+#### Check Stdio MCP Server
 ```bash
+cd postgres-mcp-server/ #path to project directory
 #from project directory
 npx @modelcontextprotocol/inspector npx tsx src/stdioIndex.ts
 ```
 ![Stdio in MCP Inspector](images/stdio.png)
 
-##### Check Streamable HTTP MCP Server
+#### Check Streamable HTTP MCP Server
 1. Install podman from [here](https://podman.io/docs/installation)
 2. Install `uv` from [here](https://docs.astral.sh/uv/getting-started/installation/)
 3. Install podman compose package: `uv sync` (will sync packages in `pyproject.toml`)
