@@ -3,10 +3,24 @@
   "version": "0.8.0",
   "description": "MCP server for interacting with PostgreSQL databases",
   "license": "MIT",
-  "author": "Anthropic, PBC (https://anthropic.com)",
+  "author": "Ahmed Mustahid",
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "homepage": "https://modelcontextprotocol.io",
   "bugs": {
     "url": "https://github.com/modelcontextprotocol/servers/issues"
+  },
+  "keywords": [
+    "postgres",
+    "mcp",
+    "server",
+    "database",
+    "model-context-protocol"
+  ],
+  "exports": {
+    ".": "./dist/src/index.js",
+    "./stdio": "./dist/src/stdioIndex.js"
   },
   "type": "module",
   "bin": {
@@ -14,10 +28,12 @@
     "mcp-server-postgres-stdio": "dist/src/stdioIndex.js"
   },
   "files": [
+    "README.md",
     "dist/src"
   ],
   "scripts": {
     "build": "tsc && shx chmod +x dist/src/*.js",
+    "prepublishOnly": "npm run build",
     "prepare": "npm run build",
     "watch": "tsc --watch",
     "clean": "rm -rf dist",
@@ -55,6 +71,9 @@
     "tsx": "^4.19.4",
     "typescript": "^5.8.3"
   },
-  "main": "index.js",
-  "keywords": []
+  "main": "dist/src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ahmedmustahid/postgres-mcp-server"
+  }
 }
