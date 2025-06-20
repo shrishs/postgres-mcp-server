@@ -1,4 +1,4 @@
-# MCP PostgreSQL Server (Dual Transport)
+# MCP PostgreSQL Server (Stateful and Dual Transport)
 
 A Model Context Protocol (MCP) server that provides both HTTP and Stdio transports for interacting with PostgreSQL databases. This server exposes database resources and tools through both transport methods, allowing for flexible integration in different environments.
 
@@ -18,11 +18,9 @@ postgres-mcp-server
 ├── Dockerfile                    # Main Docker container configuration for the MCP server
 ├── Makefile                      # Build automation and common development tasks
 ├── README.md                     # Project documentation and setup instructions
-├── docker-compose.dev.yml        # Development environment Docker Compose configuration
 ├── docker-compose.yml            # Production Docker Compose configuration
-├── package-lock.json             # Exact dependency versions for Node.js packages
 ├── package.json                  # Node.js project configuration and dependencies
-├── pyproject.toml               # Python project configuration (likely for tooling/scripts)
+├── pyproject.toml               # Python project configuration
 ├── tsconfig.json                # TypeScript compiler configuration
 └── src/
     ├── config/
@@ -64,6 +62,7 @@ nano .env
 
 ### 2. Development
 
+Download node.js and npm from [here](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 ```bash
 # Install dependencies
 npm install
@@ -94,60 +93,19 @@ Or start Stdio server
 npm run build
 npm run start:stdio
 ```
+## Podman Usage
 
-## Docker Usage
-
-### HTTP Server
-
+1. Install podman from [here](https://podman.io/docs/installation)
+2. Install `uv` from [here](https://docs.astral.sh/uv/getting-started/installation/)
+3. Install podman compose package: `uv add podman-compose` (or `uv sync` to sync packages in `pyproject.toml`)
 ```bash
-# Build and start HTTP server
-npm run docker:build
-npm run docker:up
-
-# View logs
-npm run docker:logs:http
-
-# Test the server
-npm run test:http
-```
-
-### Stdio Server
-
-```bash
-# Run Stdio server (interactive)
-npm run docker:up:stdio
-
-# Or using docker-compose directly
-docker-compose --profile stdio up mcp-stdio
-```
-
-### Development with Docker
-
-```bash
-# Start development environment with hot reload
-npm run compose:dev
-```
-
-## Available Scripts
-
-### Development
-- `npm run dev:http` - Start HTTP server in development mode
-- `npm run dev:stdio` - Start Stdio server in development mode
-- `npm run watch` - Watch TypeScript files for changes
-- `npm run build` - Build the project
-- `npm run clean` - Clean build artifacts
-
-### Production
-- `npm run start:http` - Start HTTP server
-- `npm run start:stdio` - Start Stdio server
-
-### Podman Commands
-
-```bash
+#get the environment variables
+set -a
+source .env
+set +a
 podman machine start
 make podman-up
 ```
-
 
 ### Test using MCP Inspector
 
@@ -188,6 +146,8 @@ MCP Resource:
 
 ### Environment Variables
 
+You have to specify these inside the .env file.
+
 | Variable | Description | Default | Required |
 |----------|-------------|---------|----------|
 | `POSTGRES_USERNAME` | PostgreSQL username | - | Yes |
@@ -199,30 +159,6 @@ MCP Resource:
 | `CORS_ORIGIN` | Allowed CORS origins (comma-separated) | localhost:8080,localhost:3000 | No |
 | `NODE_ENV` | Environment mode | development | No |
 
-## API Endpoints (HTTP Transport)
-
-### POST /mcp
-Main MCP endpoint for JSON-RPC requests.
-
-**Headers:**
-- `Content-Type: application/json`
-- `Mcp-Session-Id: <session-id>` (for existing sessions)
-
-**Example Request:**
-```bash
-curl -X POST http://localhost:3000/mcp \
-  -H "Content-Type: application/json" \
-  -d '{"jsonrpc":"2.0","method":"server/info","id":1}'
-```
-
-### DELETE /mcp
-Close a specific session.
-
-**Headers:**
-- `Mcp-Session-Id: <session-id>`
-
-### OPTIONS /mcp
-CORS preflight handling.
 
 ## Resources
 
@@ -243,20 +179,6 @@ Execute read-only SQL queries against the database.
 **Parameters:**
 - `sql` (string): The SQL query to execute
 
-**Example:**
-```json
-{
-  "jsonrpc": "2.0",
-  "method": "tools/call",
-  "params": {
-    "name": "query",
-    "arguments": {
-      "sql": "SELECT * FROM users LIMIT 10"
-    }
-  },
-  "id": 1
-}
-```
 
 ## Transport Differences
 
@@ -270,7 +192,7 @@ Execute read-only SQL queries against the database.
 
 ## Health Checks
 
-The HTTP server includes a basic health check endpoint accessible at the `/mcp` endpoint with a GET request (returns 405 Method Not Allowed, confirming the server is responsive).
+The HTTP server includes a basic health check endpoint accessible at the `/health` endpoint with a GET request (returns 405 Method Not Allowed, confirming the server is responsive).
 
 ## Troubleshooting
 
