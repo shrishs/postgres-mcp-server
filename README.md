@@ -63,10 +63,11 @@ nano .env
 ### 2. Development
 
 Download node.js and npm from [here](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+Install packages and build the server
 ```bash
+# from project root
 # Install dependencies
 npm install
-
 # Build the project
 npm run build
 ```
@@ -88,9 +89,16 @@ npm run dev:stdio -- --verbose
 
 Download node.js and npm from [here](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 
-Build and start HTTP server
+Install packages and build the server
 ```bash
+# from project root
+# Install dependencies
+npm install
+# Build the project
 npm run build
+```
+start HTTP server
+```bash
 npm run start:http -- --verbose
 #or just
 # npm run start:http
@@ -118,6 +126,8 @@ make podman-up
 ```
 ### Test using Claude Desktop
 
+First, install node.js and npm, build the project following the above instructions.
+Edit your `claude_desktop_config.json`
 ```json
 {
   "mcpServers": {
@@ -139,16 +149,19 @@ make podman-up
 #### Check if MCP Server has been enabled
 
 Verify from Claude Desktop Window
+
 ![Claude Desktop Window](images/cd_window.png)
 
 #### Using MCP Server from Claude Desktop
 
 Prompt: Show `sales` table from last year.
+
 ![Result](images/cd_mcp.png)
 
 
 ### Test using MCP Inspector
 
+First, install node.js and npm, build the project following the above instructions.
 Install MCP Inspector: instructions: [here](https://modelcontextprotocol.io/docs/tools/inspector)
 
 #### Check Stdio MCP Server
