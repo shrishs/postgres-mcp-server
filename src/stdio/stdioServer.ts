@@ -6,9 +6,9 @@ export async function runStdioServer() {
   const server = createMcpServer();
   const transport = new StdioServerTransport();
 
-  logger.error("Starting MCP stdio server...");
+  logger.info("Starting MCP stdio server...");
   await server.connect(transport);
-  logger.error("MCP stdio server started successfully");
+  logger.info("MCP stdio server started successfully");
 
   let isShuttingDown = false;
 
