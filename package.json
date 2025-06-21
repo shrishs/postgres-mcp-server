@@ -1,5 +1,5 @@
 {
-  "name": "@modelcontextprotocol/server-postgres",
+  "name": "@ahmedmustahid/postgres-mcp-server",
   "version": "0.8.0",
   "description": "MCP server for interacting with PostgreSQL databases",
   "license": "MIT",
@@ -24,8 +24,7 @@
   },
   "type": "module",
   "bin": {
-    "mcp-server-postgres": "dist/src/index.js",
-    "mcp-server-postgres-stdio": "dist/src/stdioIndex.js"
+    "postgres-mcp-server": "dist/src/cli.js"
   },
   "files": [
     "README.md",

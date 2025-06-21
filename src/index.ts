@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { config } from "./config/env.js";
 import { createApp } from "./http/app.js";
 import { logger } from "./utils/logger.js";
