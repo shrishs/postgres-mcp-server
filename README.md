@@ -11,44 +11,70 @@ A Model Context Protocol (MCP) server that provides both HTTP and Stdio transpor
 - **Docker Support**: Containerized deployments for both transports
 - **Production Ready**: Graceful shutdown, error handling, and logging
 
-## Project Structure
-
-```
-postgres-mcp-server
-├── Dockerfile                    # Main Docker container configuration for the MCP server
-├── Makefile                      # Build automation and common development tasks
-├── README.md                     # Project documentation and setup instructions
-├── docker-compose.yml            # Production Docker Compose configuration
-├── package.json                  # Node.js project configuration and dependencies
-├── pyproject.toml               # Python project configuration
-├── tsconfig.json                # TypeScript compiler configuration
-└── src/
-    ├── config/
-    │   ├── database.ts          # Database connection configuration and setup
-    │   └── env.ts               # Environment variable handling and validation
-    ├── http/
-    │   ├── Dockerfile           # Docker configuration specific to HTTP server mode
-    │   ├── app.ts               # HTTP application setup and Express.js configuration
-    │   └── httpHandler.ts       # HTTP request handlers for MCP protocol over HTTP
-    ├── index.ts                 # Main entry point for the MCP server
-    ├── resources/
-    │   ├── databaseSchema.ts    # MCP resource for exposing database schema information
-    │   ├── databaseTables.ts    # MCP resource for listing and describing database tables
-    │   └── helloWorld.ts        # Example/test resource implementation
-    ├── server/
-    │   └── server.ts            # Core MCP server implementation and protocol handling
-    ├── stdio/
-    │   ├── Dockerfile           # Docker configuration for stdio communication mode
-    │   └── stdioServer.ts       # MCP server configured for stdio communication
-    ├── stdioIndex.ts            # Entry point for stdio-based MCP server
-    └── tools/
-        └── queryTool.ts         # MCP tool for executing PostgreSQL queries
-
-```
-
 ## Quick Start
+### Environment Setup
 
-### 1. Environment Setup
+The database credentials must be passed as:
+
+1. Either environment variables
+```bash
+# PostgreSQL Database Configuration
+export POSTGRES_USERNAME=your_username
+export POSTGRES_PASSWORD=your_password
+export POSTGRES_HOST=localhost
+export POSTGRES_DATABASE=your_database
+
+# HTTP Server Configuration
+# Following are the default values
+export PORT=3000
+export HOST=0.0.0.0
+
+# CORS Configuration (comma-separated list of allowed origins)
+# Following are the default values
+export CORS_ORIGIN=http://localhost:8080,http://localhost:3000
+
+# Environment
+# Following are the default values
+export NODE_ENV=development
+
+```
+2. Or in the working directory (directory where `npx` command will be run):
+create a `.env` file (the package uses `dotenv` package)
+
+```bash
+# .env.example
+# PostgreSQL Database Configuration
+POSTGRES_USERNAME=your_username
+POSTGRES_PASSWORD=your_password
+POSTGRES_HOST=localhost
+POSTGRES_DATABASE=your_database
+
+# HTTP Server Configuration
+PORT=3000
+HOST=0.0.0.0
+
+# CORS Configuration (comma-separated list of allowed origins)
+CORS_ORIGIN=http://localhost:8080,http://localhost:3000
+
+# Environment
+NODE_ENV=development
+```
+
+### Run using `npx`
+
+1. Download node.js and npm from [here](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+2. Run the package. By default, it will run streamable http on port 3000:
+```bash
+npx @ahmedmustahid/postgres-mcp-server@0.8.1
+# or npx @ahmedmustahid/postgres-mcp-server@0.8.1 --port 3000 --verbose
+```
+3. For stdio transport:
+```bash
+npx @ahmedmustahid/postgres-mcp-server@0.8.1 stdio
+# npx @ahmedmustahid/postgres-mcp-server@0.8.1 stdio --verbose
+```
+
+### Environment Setup
 
 Copy environment template
 ```bash
@@ -60,58 +86,7 @@ Edit your database credentials
 nano .env
 ```
 
-### 2. Development
-
-Download node.js and npm from [here](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
-Install packages and build the server
-```bash
-# from project root
-# Install dependencies
-npm install
-# Build the project
-npm run build
-```
-Run HTTP server in development
-```bash
-npm run dev:http -- --verbose
-#or just
-# npm run dev:http
-```
-
-Run Stdio server in development
-```bash
-npm run dev:stdio -- --verbose
-#or just
-# npm run dev:stdio
-```
-
-### 3. Production
-
-Download node.js and npm from [here](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
-
-Install packages and build the server
-```bash
-# from project root
-# Install dependencies
-npm install
-# Build the project
-npm run build
-```
-start HTTP server
-```bash
-npm run start:http -- --verbose
-#or just
-# npm run start:http
-```
-
-Or start Stdio server
-```bash
-npm run build
-npm run start:stdio -- --verbose
-#or just
-# npm run start:stdio
-```
-## Podman Usage
+## Podman(or Docker) Usage
 
 1. Install podman from [here](https://podman.io/docs/installation)
 2. Install `uv` from [here](https://docs.astral.sh/uv/getting-started/installation/)
@@ -124,7 +99,7 @@ set +a
 podman machine start
 make podman-up
 ```
-### Test using Claude Desktop
+## Test using Claude Desktop
 
 First, install node.js and npm, build the project following the above instructions.
 Edit your `claude_desktop_config.json`
@@ -132,9 +107,10 @@ Edit your `claude_desktop_config.json`
 {
   "mcpServers": {
     "postgres-mcp-server": {
-      "command": "node",
+      "command": "npx",
       "args": [
-        "/path/to/postgres-mcp-server/dist/src/stdioIndex.js"
+        "@ahmedmustahid/postgres-mcp-server@0.8.1",
+        "stdio"
       ],
       "env": {
         "POSTGRES_USERNAME": "your-username",
@@ -166,27 +142,21 @@ Install MCP Inspector: instructions: [here](https://modelcontextprotocol.io/docs
 
 #### Check Stdio MCP Server
 ```bash
-cd postgres-mcp-server/ #path to project directory
-#from project directory
-npx @modelcontextprotocol/inspector npx tsx src/stdioIndex.ts
+npx @modelcontextprotocol/inspector npx  npx @ahmedmustahid/postgres-mcp-server@0.8.1 stdio
 ```
-![Stdio in MCP Inspector](images/stdio.png)
+![Stdio in MCP Inspector](images/mcp_insp_stdio.png)
 
 #### Check Streamable HTTP MCP Server
-1. Install podman from [here](https://podman.io/docs/installation)
-2. Install `uv` from [here](https://docs.astral.sh/uv/getting-started/installation/)
-3. Install podman compose package: `uv sync` (will sync packages in `pyproject.toml`)
+
+First, run the server (shell where environment has been configured):
 ```bash
-#get the environment variables
-set -a
-source .env
-set +a
-#start podman container (if running for the first time)
-make podman-up #will construct the container of the MCP server
-#if already exists: podman start <name_of_the_container>
+npx @ahmedmustahid/postgres-mcp-server@0.8.1
+```
+Run the mcp inspector from another terminal
+```bash
 npx @modelcontextprotocol/inspector
 ```
-After selecting `Streamable HTTP` from drop down menu, insert `http://localhost:3000/mcp` into URL.
+After selecting `Streamable HTTP` from drop down menu, insert `http://localhost:3000/mcp`(default) into URL.
 
 MCP tools:
 ![MCP Tools in MCP Inspector](images/http_tool.png)
