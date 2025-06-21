@@ -72,26 +72,36 @@ npm run build
 ```
 Run HTTP server in development
 ```bash
-npm run dev:http
+npm run dev:http -- --verbose
+#or just
+# npm run dev:http
 ```
 
 Run Stdio server in development
 ```bash
-npm run dev:stdio
+npm run dev:stdio -- --verbose
+#or just
+# npm run dev:stdio
 ```
 
 ### 3. Production
 
+Download node.js and npm from [here](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
+
 Build and start HTTP server
 ```bash
 npm run build
-npm run start:http
+npm run start:http -- --verbose
+#or just
+# npm run start:http
 ```
 
 Or start Stdio server
 ```bash
 npm run build
-npm run start:stdio
+npm run start:stdio -- --verbose
+#or just
+# npm run start:stdio
 ```
 ## Podman Usage
 
@@ -106,6 +116,36 @@ set +a
 podman machine start
 make podman-up
 ```
+### Test using Claude Desktop
+
+```json
+{
+  "mcpServers": {
+    "postgres-mcp-server": {
+      "command": "node",
+      "args": [
+        "/path/to/postgres-mcp-server/dist/src/stdioIndex.js"
+      ],
+      "env": {
+        "POSTGRES_USERNAME": "your-username",
+        "POSTGRES_PASSWORD": "your-password",
+        "POSTGRES_HOST": "hostname",
+        "POSTGRES_DATABASE": "database-name"
+      }
+    }
+  }
+}
+```
+#### Check if MCP Server has been enabled
+
+Verify from Claude Desktop Window
+![Claude Desktop Window](images/cd_window.png)
+
+#### Using MCP Server from Claude Desktop
+
+Prompt: Show `sales` table from last year.
+![Result](images/cd_mcp.png)
+
 
 ### Test using MCP Inspector
 
