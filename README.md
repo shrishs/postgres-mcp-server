@@ -65,13 +65,13 @@ NODE_ENV=development
 1. Download node.js and npm from [here](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 2. Run the package. By default, it will run streamable http on port 3000:
 ```bash
-npx @ahmedmustahid/postgres-mcp-server@0.8.2
-# or npx @ahmedmustahid/postgres-mcp-server@0.8.2 --port 3000 --verbose
+npx @ahmedmustahid/postgres-mcp-server
+# or npx @ahmedmustahid/postgres-mcp-server --port 3000 --verbose
 ```
 3. For stdio transport:
 ```bash
-npx @ahmedmustahid/postgres-mcp-server@0.8.2 stdio
-# npx @ahmedmustahid/postgres-mcp-server@0.8.2 stdio --verbose
+npx @ahmedmustahid/postgres-mcp-server stdio
+# npx @ahmedmustahid/postgres-mcp-server stdio --verbose
 ```
 
 ### Environment Setup
@@ -109,7 +109,7 @@ Edit your `claude_desktop_config.json`
     "postgres-mcp-server": {
       "command": "npx",
       "args": [
-        "@ahmedmustahid/postgres-mcp-server@0.8.2",
+        "@ahmedmustahid/postgres-mcp-server",
         "stdio"
       ],
       "env": {
@@ -142,7 +142,7 @@ Install MCP Inspector: instructions: [here](https://modelcontextprotocol.io/docs
 
 #### Check Stdio MCP Server
 ```bash
-npx @modelcontextprotocol/inspector npx @ahmedmustahid/postgres-mcp-server@0.8.2 stdio
+npx @modelcontextprotocol/inspector npx @ahmedmustahid/postgres-mcp-server stdio
 ```
 ![Stdio in MCP Inspector](images/mcp_insp_stdio.png)
 
@@ -150,7 +150,7 @@ npx @modelcontextprotocol/inspector npx @ahmedmustahid/postgres-mcp-server@0.8.2
 
 First, run the server (shell where environment has been configured):
 ```bash
-npx @ahmedmustahid/postgres-mcp-server@0.8.2
+npx @ahmedmustahid/postgres-mcp-server
 ```
 Run the mcp inspector from another terminal
 ```bash
