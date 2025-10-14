@@ -1,0 +1,11 @@
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: mcp.postgres
+  description: MCP Postgres server contract (placeholder)
+spec:
+  type: other
+  lifecycle: experimental
+  owner: user:shrishs
+  definition: |
+    # Placeholder. Replace with an interface spec (e.g., OpenAPI) if you expose HTTP endpoints.
