@@ -1,0 +1,24 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: postgres-mcp-server
+  description: MCP server exposing PostgreSQL via the Model Context Protocol.
+  tags: [mcp, postgres, database]
+  annotations:
+    github.com/project-slug: shrishs/postgres-mcp-server
+    backstage.io/source-location: url:https://github.com/shrishs/postgres-mcp-server
+    backstage.io/techdocs-ref: dir:.
+  links:
+    - url: https://github.com/shrishs/postgres-mcp-server
+      title: Repository
+      icon: github
+    - url: https://github.com/modelcontextprotocol/servers-archived/tree/main/src/postgres
+      title: Upstream reference
+      icon: docs
+spec:
+  type: service
+  lifecycle: experimental
+  owner: user:shrishs            # change to a real owner entity in your RHDH if needed (e.g., group:platform)
+  system: mcp-platform           # optional; include only if you also register the System below
+  providesApis:
+    - mcp.postgres               # optional; include only if you also register the API below
