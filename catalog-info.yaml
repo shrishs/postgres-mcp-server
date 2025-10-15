@@ -16,7 +16,7 @@ metadata:
       title: Upstream reference
       icon: docs
 spec:
-  type: service
+  type: mcp-server
   lifecycle: experimental
   owner: user:shrishs            # change to a real owner entity in your RHDH if needed (e.g., group:platform)
   system: mcp-platform           # optional; include only if you also register the System below
