@@ -1,6 +1,5 @@
 site_name: Postgres MCP Server
-docs_dir: . 
 nav:
-  - Overview: README.md
+  - Overview: index.md
 plugins:
   - techdocs-core
