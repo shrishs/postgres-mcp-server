@@ -6,7 +6,7 @@ metadata:
   tags: [mcp, postgres, database]
   annotations:
     github.com/project-slug: shrishs/postgres-mcp-server
-    backstage.io/source-location: url:https://github.com/shrishs/postgres-mcp-server
+    backstage.io/source-location: url:https://github.com/shrishs/postgres-mcp-server/blob/main/catalog-info.yaml
     backstage.io/techdocs-ref: dir:.
   links:
     - url: https://github.com/shrishs/postgres-mcp-server
