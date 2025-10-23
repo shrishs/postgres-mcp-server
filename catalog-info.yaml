@@ -11,8 +11,14 @@ spec:
   owner: group:platform
   definition: |
     tools:
-      - mcp.postgres.query(sql: string) -> rows[]
-      - mcp.postgres.listTables() -> table[]
+      - name: query
+        summary: Execute SQL (read-only)
+        input:
+          - name: sql
+            type: string
+    resources:
+      - name: database://tables
+        summary: List database tables      
 ---
 apiVersion: backstage.io/v1alpha1
 kind: Resource
