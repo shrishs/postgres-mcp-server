@@ -5,6 +5,10 @@ metadata:
   title: MCP Postgres Tools
   description: Tools exposed by the Postgres MCP server (e.g., query, listTables).
   tags: [mcp, postgres, database]
+  links:
+    - url: http://localhost:3001/mcp
+      title: MCP API Endpoint
+      icon: api
 spec:
   type: mcp
   lifecycle: production
@@ -46,6 +50,12 @@ metadata:
     backstage.io/source-location: url:https://github.com/shrishs/postgres-mcp-server/blob/main/catalog-info.yaml
     backstage.io/techdocs-ref: dir:.
   links:
+    - url: http://localhost:3001/mcp
+      title: MCP Endpoint
+      icon: api
+    - url: http://localhost:3001/health
+      title: Health Check
+      icon: monitor
     - url: https://github.com/shrishs/postgres-mcp-server
       title: Repository
       icon: github
